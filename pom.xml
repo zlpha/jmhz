@@ -36,7 +36,11 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <groupId>com.zlpha.jmhz</groupId>
     <artifactId>jmhz</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>logging</module>
+        <module>samples</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <name>JMH benchmark sample: Java</name>
 
@@ -76,8 +80,8 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jmh.version>1.4.1</jmh.version>
-        <javac.target>1.6</javac.target>
+        <jmh.version>1.15</jmh.version>
+        <javac.target>1.7</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 

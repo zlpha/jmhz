@@ -28,57 +28,59 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package com.zlpha.jmhz;
+package com.zlpha.jmhz.samples;
 
 import org.openjdk.jmh.annotations.Benchmark;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-public class MyBenchmark {
+/*
+ * Fortunately, in many cases you just need a single state object.
+ * In that case, we can mark the benchmark instance itself to be
+ * the @State. Then, we can reference its own fields as any
+ * Java program does.
+ */
 
-    private static final Logger logger = LoggerFactory.getLogger(MyBenchmark.class);
+@State(Scope.Thread)
+public class JMHSample_04_DefaultState {
 
-    @Benchmark
-    public void testConcatenatingStrings() {
+    double x = Math.PI;
 
-        String x = "", y = "", z = "";
+    public static void main(String[] args) throws RunnerException {
+        Options opt = new OptionsBuilder()
+                .include(JMHSample_04_DefaultState.class.getSimpleName())
+                .warmupIterations(5)
+                .measurementIterations(5)
+                .forks(1)
+                .build();
 
-        for (int i = 0; i < 100; i++) {
-            x += i;
-            y += i;
-            z += i;
-
-            logger.debug("Concatenating strings " + x + y + z);
-        }
+        new Runner(opt).run();
     }
 
+    /*
+     * ============================== HOW TO RUN THIS TEST: ====================================
+     *
+     * You can see the benchmark runs as usual.
+     *
+     * You can run this test:
+     *
+     * a) Via the command line:
+     *    $ mvn clean install
+     *    $ java -jar target/benchmarks.jar JMHSample_04 -wi 5 -i 5 -f 1
+     *    (we requested 5 warmup/measurement iterations, single fork)
+     *
+     * b) Via the Java API:
+     *    (see the JMH homepage for possible caveats when running from IDE:
+     *      http://openjdk.java.net/projects/code-tools/jmh/)
+     */
+
     @Benchmark
-    public void testVariableArguments() {
-
-        String x = "", y = "", z = "";
-
-        for (int i = 0; i < 100; i++) {
-            x += i;
-            y += i;
-            z += i;
-
-            logger.debug("Variable arguments {} {} {}", x, y, z);
-        }
+    public void measure() {
+        x++;
     }
 
-    @Benchmark
-    public void testIfDebugEnabled() {
-
-        String x = "", y = "", z = "";
-
-        for (int i = 0; i < 100; i++) {
-            x += i;
-            y += i;
-            z += i;
-
-            if (logger.isDebugEnabled())
-                logger.debug("If debug enabled {} {} {}", x, y, z);
-        }
-    }
 }
