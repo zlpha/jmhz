@@ -39,6 +39,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
     <modules>
         <module>logging</module>
         <module>samples</module>
+        <module>securerandom</module>
     </modules>
     <packaging>pom</packaging>
 
